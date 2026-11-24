@@ -11,7 +11,7 @@ import stat
 import sys
 import tempfile
 
-VERSION = '1.0.0'
+VERSION = '1.1.0'
 MAX_FILE = 32 * 1024 * 1024
 MAX_FILES = 10000
 MAX_CONFIG = 65536

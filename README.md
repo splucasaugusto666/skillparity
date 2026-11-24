@@ -86,6 +86,10 @@ Relative paths are interpreted from the configuration file's directory. Only `ba
 
 See [real-world use cases: shared skills, Claude Code, Codex and CI](docs/USE_CASES.md) and [CI integration](docs/CI_INTEGRATION.md) for examples pinned to the official v1.0.0 release.
 
+## Optional MCP integration (v1.1.0)
+
+The next release adds the `skillparity-mcp` command and optional `mcp` extra. The standard CLI still has zero runtime dependencies. The MCP adapter uses local stdio, fixed operator-selected catalogs, and aggregate-only output. The [client/server protocol smoke test](https://github.com/splucasaugusto666/skillparity/actions/runs/45309886663) passed on Linux; compatibility with individual host applications is not yet verified. See [MCP setup](docs/MCP.md) and [aggregate JSON](docs/AGGREGATE_JSON.md). Check [Releases](https://github.com/splucasaugusto666/skillparity/releases) for availability of v1.1.0.
+
 ## Use SkillParity from an AI agent
 
 The repository includes an original [Agent Skill](skills/skillparity/SKILL.md) that teaches an agent to use the official CLI safely. Review and copy the skill folder into the catalog supported by your agent; install the CLI separately with your approval. Try asking: "Compare my selected skill catalogs and report drift without changing anything." Compatibility with individual agent loaders is not yet independently tested.

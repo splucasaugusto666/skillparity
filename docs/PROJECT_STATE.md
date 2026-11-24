@@ -1,6 +1,3 @@
 # State
 
-Official release v1.0.0 published on 2026-11-23 (America/Sao_Paulo): https://github.com/splucasaugusto666/skillparity/releases/tag/v1.0.0
-Release workflow completed with nine successful jobs, including the cross-platform matrix and publication: https://github.com/splucasaugusto666/skillparity/actions/runs/45306438506
-42 local tests passed again. No runtime dependencies. Wheel and SHA256SUMS are uploaded. PyPI and Marketplace publication remain unverified.
-Adoption experiment: official wheel prioritized in README; feedback thread #1; baseline in PRODUCT_METRICS.md. External posting and repository metadata settings are pending owner action. Next: measure genuine adoption and fix reproducible feedback. Do not make unverified growth claims.
+Official v1.0.0 remains available. PRs #2 and #3 merged after successful CI, including the real MCP client/server smoke test. v1.1.0 candidate: 54 local tests passed, core wheel built and installed, both entry points checked (SDK not installed locally). Release v1.1.0 requires fresh remote CI, protocol smoke and installed extra verification. No runtime dependencies for the core; optional MCP SDK adds its own dependencies. Check GitHub Releases before claiming publication. Stars: 1 observed before this change; 50 is an aspirational target.

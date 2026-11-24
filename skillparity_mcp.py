@@ -38,7 +38,12 @@ def main():
         check = configured_check(args.workspace, args.config)
     except (OSError, ValueError, RuntimeError):
         parser.error('invalid trusted workspace configuration')
-    from mcp.server.fastmcp import FastMCP
+    try:
+        from mcp.server.fastmcp import FastMCP
+    except ModuleNotFoundError as exc:
+        if exc.name != "mcp":
+            raise
+        parser.error("MCP SDK missing; install the optional skillparity[mcp] extra")
     server = FastMCP('SkillParity')
 
     @server.tool()

@@ -1,6 +1,6 @@
-# Aggregate JSON reports (unreleased)
+# Aggregate JSON reports (v1.1.0+)
 
-Use `python skillparity.py demo --summary-json` from this development checkout. The current v1.0.0 wheel does not include this option.
+Use `python skillparity.py demo --summary-json` from a v1.1.0 or later checkout. The current v1.0.0 wheel does not include this option.
 
 ```json
 {

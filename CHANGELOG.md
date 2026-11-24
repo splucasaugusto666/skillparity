@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0 — release candidate
+
+- Added aggregate-only JSON output for agents and dashboards.
+- Added experimental optional MCP adapter with a fixed workspace and no path arguments on tools.
+- Added optional `mcp` dependency extra and `skillparity-mcp` executable.
+- 54 local tests passed; previous MCP protocol and cross-platform PR checks passed. New release workflow revalidates before publishing.
+
 ## 1.0.0 — locally validated release candidate
 
 - Added standalone HTML reporting with escaped untrusted text.
