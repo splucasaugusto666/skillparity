@@ -141,7 +141,8 @@ def render(report):
         print('No skills found; parity cannot be verified.')
 
 
-def render_summary(report):
+def summarize(report):
+    """Return aggregate counts without skill names, root labels or paths."""
     counts = {}
     for row in report['skills']:
         for label, cell in row['roots'].items():
@@ -149,9 +150,17 @@ def render_summary(report):
                 continue
             status = cell['status']
             counts[status] = counts.get(status, 0) + 1
+    return {'schema_version': 1, 'skills': len(report['skills']),
+            'targets': len(report['labels']) - 1, 'counts': counts,
+            'exit_code': exit_code(report)}
+
+
+def render_summary(report):
+    summary = summarize(report)
+    counts = summary['counts']
     details = ' | '.join(f'{key}={counts[key]}' for key in sorted(counts))
-    print(f"SkillParity | skills={len(report['skills'])} | targets={len(report['labels']) - 1}"
-          + (f' | {details}' if details else '') + f' | exit={exit_code(report)}')
+    print(f"SkillParity | skills={summary['skills']} | targets={summary['targets']}"
+          + (f' | {details}' if details else '') + f" | exit={summary['exit_code']}")
 
 
 def render_html(report):
@@ -232,6 +241,7 @@ def main(argv=None):
         output.add_argument('--json', action='store_true')
         output.add_argument('--html', action='store_true', help='Emit a standalone HTML report to stdout')
         output.add_argument('--summary', action='store_true', help='Print compact counts and exit status')
+        output.add_argument('--summary-json', action='store_true', help='Emit aggregate counts as JSON')
         if cmd == 'check':
             source = p.add_mutually_exclusive_group(required=True)
             source.add_argument('--root', action='append', metavar='LABEL=PATH')
@@ -259,6 +269,8 @@ def main(argv=None):
             print(json.dumps(report, indent=2, ensure_ascii=True))
         elif args.html:
             render_html(report)
+        elif args.summary_json:
+            print(json.dumps(summarize(report), sort_keys=True, indent=2))
         elif args.summary:
             render_summary(report)
         else:
