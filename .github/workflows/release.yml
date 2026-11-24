@@ -1,0 +1,69 @@
+name: Release v1.0.0
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/release.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: skillparity-release-v1-0-0
+  cancel-in-progress: false
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/ci.yml
+  build:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Build and smoke-test the wheel
+        run: |
+          python -m pip wheel --no-deps --wheel-dir dist .
+          python -m pip install --no-deps dist/skillparity-1.0.0-py3-none-any.whl
+          test "$(skillparity --version)" = '1.0.0'
+          python -c "import subprocess; assert subprocess.run(['skillparity', 'demo', '--summary']).returncode == 1"
+          (cd dist && sha256sum skillparity-1.0.0-py3-none-any.whl > SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skillparity-release-wheel
+          path: dist/
+          if-no-files-found: error
+  publish:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: skillparity-release-wheel
+          path: dist
+      - name: Publish tested release without replacing existing tags
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          (cd dist && sha256sum -c SHA256SUMS)
+          if gh release view v1.0.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'Release already exists; no changes made.'
+            exit 0
+          fi
+          if git ls-remote --exit-code --tags "https://github.com/$GITHUB_REPOSITORY.git" refs/tags/v1.0.0 >/dev/null; then
+            echo 'Tag already exists; review manually before publishing.' >&2
+            exit 1
+          else
+            result=$?
+            test "$result" -eq 2
+          fi
+          gh release create v1.0.0 dist/skillparity-1.0.0-py3-none-any.whl dist/SHA256SUMS \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title 'SkillParity 1.0.0' \
+            --notes 'Read-only Agent Skills parity CLI, JSON and HTML reports, reusable GitHub Action. Validated by the cross-platform CI matrix and wheel smoke test. No runtime dependencies. See README and SECURITY.md for limitations.'

@@ -1,3 +1,3 @@
 # State
 
-Version 1.0.0, locally validated release candidate. Linux/Python 3.13.5: 42 tests passed; wheel built and installed in a fresh virtual environment; installed CLI and synthetic CI fixture verified. Remote cross-platform CI, formal GitHub Release and Marketplace publication remain unverified. Next: verify remote CI, gather independent feedback, and publish a formal release when permitted.
+Version 1.0.0: 42 local tests passed again on Linux/Python 3.13.5; wheel rebuilt, installed in a clean environment and smoke-tested. Release workflow configured to gate official publication on the cross-platform matrix and composite-action smoke test. Remote execution, formal release and Marketplace listing are not yet verified. See RELEASING.md. No runtime dependencies. Next: verify release workflow and actual release assets, collect independent feedback, and improve adoption based on evidence.
