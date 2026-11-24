@@ -2,6 +2,7 @@
 """Read-only comparison of explicitly selected Agent Skills directories."""
 import argparse
 import hashlib
+import html
 import json
 import os
 from pathlib import Path
@@ -10,7 +11,7 @@ import stat
 import sys
 import tempfile
 
-VERSION = '0.4.0'
+VERSION = '1.0.0'
 MAX_FILE = 32 * 1024 * 1024
 MAX_FILES = 10000
 MAX_CONFIG = 65536
@@ -153,6 +154,26 @@ def render_summary(report):
           + (f' | {details}' if details else '') + f' | exit={exit_code(report)}')
 
 
+def render_html(report):
+    """Render a standalone, inert report; treat names as untrusted text."""
+    safe = lambda value: html.escape(json.dumps(value, ensure_ascii=True))
+    print('<!doctype html><html lang="en"><meta charset="utf-8">')
+    print('<meta name="viewport" content="width=device-width,initial-scale=1">')
+    print('<title>SkillParity report</title><style>body{font:16px system-ui;margin:2rem;color:#18252d}table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbb;padding:.6rem;text-align:left;overflow-wrap:anywhere}th{background:#eee}small{display:block}h1{color:#145b41}</style>')
+    print('<h1>SkillParity report</h1>')
+    print(f'<p>Exit code: {exit_code(report)} | Skills: {len(report["skills"])}</p>')
+    print(f'<p>Baseline: {safe(report["baseline"])}</p>')
+    print('<table><thead><tr><th>Skill</th><th>Root</th><th>Status</th><th>Details</th></tr></thead><tbody>')
+    for row in report['skills']:
+        for label, cell in row['roots'].items():
+            details = []
+            for key in ('added', 'removed', 'changed', 'error'):
+                if cell.get(key):
+                    details.append(f'<small>{key}: {safe(cell[key])}</small>')
+            print(f'<tr><td>{safe(row["skill"])}</td><td>{safe(label)}</td><td>{safe(cell["status"])}</td><td>{"".join(details)}</td></tr>')
+    print('</tbody></table><p>Names and paths may be sensitive. Review before sharing.</p></html>')
+
+
 def demo():
     with tempfile.TemporaryDirectory() as d:
         base = Path(d)
@@ -169,7 +190,12 @@ def demo():
 def load_config(path):
     """Read a small, explicitly selected JSON config; reject ambiguous keys."""
     path = Path(path).expanduser().absolute()
-    with path.open('rb') as stream:
+    if not path.is_file():
+        raise ValueError('config must be a regular file')
+    fd = os.open(path, os.O_RDONLY | getattr(os, 'O_NONBLOCK', 0) | getattr(os, 'O_BINARY', 0))
+    with os.fdopen(fd, 'rb') as stream:
+        if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
+            raise ValueError('config must be a regular file')
         data = stream.read(MAX_CONFIG + 1)
     if len(data) > MAX_CONFIG:
         raise ValueError('config exceeds size limit')
@@ -204,6 +230,7 @@ def main(argv=None):
         p = sub.add_parser(cmd)
         output = p.add_mutually_exclusive_group()
         output.add_argument('--json', action='store_true')
+        output.add_argument('--html', action='store_true', help='Emit a standalone HTML report to stdout')
         output.add_argument('--summary', action='store_true', help='Print compact counts and exit status')
         if cmd == 'check':
             source = p.add_mutually_exclusive_group(required=True)
@@ -230,6 +257,8 @@ def main(argv=None):
             report = compare(roots, args.baseline, args.allow_target)
         if args.json:
             print(json.dumps(report, indent=2, ensure_ascii=True))
+        elif args.html:
+            render_html(report)
         elif args.summary:
             render_summary(report)
         else:

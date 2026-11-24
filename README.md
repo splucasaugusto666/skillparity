@@ -77,6 +77,16 @@ See [CI integration](docs/CI_INTEGRATION.md) for a pinned workflow example.
 
 Add a parity gate to your repository on a Linux runner with Python 3.10+ and a checked-out workspace. Use the [integration guide](docs/CI_INTEGRATION.md) to pin a reviewed commit and configure the composite action. The action emits only aggregate counts, fails on drift or incomplete verification, and rejects configuration paths and catalog roots that resolve outside the workspace. It does not install or execute skills. Remote Action execution has not yet been verified.
 
+## Visual reports
+
+Generate a standalone HTML report (no JavaScript, external assets or network requests):
+
+```sh
+skillparity demo --html > report.html
+```
+
+Open `report.html` in a browser. The demo returns exit code 1 intentionally. Reports include skill and file names; review them before sharing. For CI logs use `--summary` instead.
+
 ## Results
 
 | Status | Meaning |

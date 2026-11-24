@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0 — locally validated release candidate
+
+- Added standalone HTML reporting with escaped untrusted text.
+- Reject nonregular config files, including FIFOs, before reading.
+- Added six regression tests; 42 local tests passed, wheel installed in a fresh virtual environment.
+- Remote CI, GitHub Release and Marketplace publication remain unverified.
+
 ## 0.4.0 — release candidate
 
 - Added a reusable composite GitHub Action for Linux/POSIX runners.
