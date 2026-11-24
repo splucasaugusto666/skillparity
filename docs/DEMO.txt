@@ -1,0 +1,7 @@
+SkillParity | baseline: "source"
+"review"
+  source: MATCH (directory)
+  claude: DRIFT (directory)
+    removed: "checklist.md"
+  codex: DRIFT (directory)
+    changed: "checklist.md"

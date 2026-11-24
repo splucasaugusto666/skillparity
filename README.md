@@ -28,9 +28,11 @@ SkillParity is not an installer, a semantic validator, or an agent runtime. It c
 
 ## Quick start
 
-Download or clone this project after it is published, then from its root:
+Clone the repository and try the demo:
 
 ```sh
+git clone https://github.com/splucasaugusto666/skillparity.git
+cd skillparity
 python skillparity.py demo
 python -m unittest discover -s tests -v
 ```

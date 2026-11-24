@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "baseline": "source",
+  "labels": [
+    "source",
+    "claude",
+    "codex"
+  ],
+  "skills": [
+    {
+      "skill": "review",
+      "roots": {
+        "source": {
+          "status": "MATCH",
+          "kind": "directory",
+          "added": [],
+          "removed": [],
+          "changed": []
+        },
+        "claude": {
+          "status": "DRIFT",
+          "kind": "directory",
+          "added": [],
+          "removed": [
+            "checklist.md"
+          ],
+          "changed": []
+        },
+        "codex": {
+          "status": "DRIFT",
+          "kind": "directory",
+          "added": [],
+          "removed": [],
+          "changed": [
+            "checklist.md"
+          ]
+        }
+      }
+    }
+  ]
+}
