@@ -24,3 +24,7 @@ Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings
 ## Status
 GitHub early adopter feedback thread published: https://github.com/splucasaugusto666/skillparity/issues/1
 No external social posts have been published. Show HN deferred until eligibility and meaningful personal testing are established.
+
+## Problem-specific launch angle
+
+Use the new [diagnostic guide](USE_CASES.md) to show what happens when a catalog has a missing link or a changed supporting file. Invite independent testing, not reciprocal stars. Reference public issue reports in the article only as examples of the problem class; do not post promotional replies to them.

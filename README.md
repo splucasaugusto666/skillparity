@@ -84,7 +84,7 @@ skillparity check --config skillparity.json --summary
 
 Relative paths are interpreted from the configuration file's directory. Only `baseline` and `roots` are accepted; duplicate keys are rejected. `--config` replaces `--root` and `--baseline`. Use only trusted configuration files; configured roots can reference arbitrary readable directories. External skill-link targets still require explicit `--allow-target` CLI arguments. Do not use untrusted PR configurations on privileged runners.
 
-See [CI integration](docs/CI_INTEGRATION.md) for a pinned workflow example.
+See [real-world use cases: shared skills, Claude Code, Codex and CI](docs/USE_CASES.md) and [CI integration](docs/CI_INTEGRATION.md) for examples pinned to the official v1.0.0 release.
 
 ## GitHub Action
 
