@@ -24,3 +24,7 @@ Hypothesis: a concrete diagnostic for documented skill-link issues and a pinned 
 Change: publish USE_CASES.md with source links, caveats and reproducible examples; pin integration examples to v1.0.0. No unsolicited comments on third-party issues.
 Observation before this change: 1 star, 0 forks, 1 wheel download, 1 checksum download, 0 comments on feedback issue #1. Downloads do not establish distinct users. G-001 remains open; overlapping changes prevent independent causal attribution.
 Primary outcome: independent technical feedback; secondary outcomes: wheel downloads and stars. Aspirational milestone: 50 genuine stars, not guaranteed. Review at 7 and 30 days.
+
+## G-003 — agent-native adoption and measurable utility
+
+Source: TREND_RESEARCH.md. Publish a read-only Agent Skill and a reproducible benchmark; monitor independent integration feedback and downloads. No new runtime dependency or release version required. No claim that these features cause stars. Benchmark baseline: 42 existing unit tests pass; ten synthetic comparisons pass. Agent-loader verification remains pending. Review with other overlapping growth experiments at 7 and 30 days.

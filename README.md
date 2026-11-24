@@ -86,6 +86,14 @@ Relative paths are interpreted from the configuration file's directory. Only `ba
 
 See [real-world use cases: shared skills, Claude Code, Codex and CI](docs/USE_CASES.md) and [CI integration](docs/CI_INTEGRATION.md) for examples pinned to the official v1.0.0 release.
 
+## Use SkillParity from an AI agent
+
+The repository includes an original [Agent Skill](skills/skillparity/SKILL.md) that teaches an agent to use the official CLI safely. Review and copy the skill folder into the catalog supported by your agent; install the CLI separately with your approval. Try asking: "Compare my selected skill catalogs and report drift without changing anything." Compatibility with individual agent loaders is not yet independently tested.
+
+## Reproducible performance
+
+The [synthetic benchmark](benchmarks/README.md) compares two catalogs and verifies the expected result on every iteration. On one local Linux/Python 3.13.5 environment, the median was 0.168 seconds for 4,000 small files across two roots (five repetitions). Reproduce with `python benchmarks/benchmark.py --skills 1000 --repeats 5`; actual performance varies.
+
 ## GitHub Action
 
 Add a parity gate to your repository on a Linux runner with Python 3.10+ and a checked-out workspace. Use the [integration guide](docs/CI_INTEGRATION.md) to pin a reviewed commit and configure the composite action. The action emits only aggregate counts, fails on drift or incomplete verification, and rejects configuration paths and catalog roots that resolve outside the workspace. It does not install or execute skills. The [release workflow](https://github.com/splucasaugusto666/skillparity/actions/runs/45306438506) passed the composite-action smoke test.
