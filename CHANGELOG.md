@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 — release candidate
+
+- Added reusable JSON configuration with relative paths, strict keys and size limit.
+- Added label validation to the Python API and eight regression tests.
+- Added CI integration guidance with explicit commit pinning and trust boundaries.
+- Local Linux tests: 27 passed; wheel built. Remote CI still unverified.
+
 ## 0.2.0 — release candidate
 
 - Added installable Python package and CLI entry point.

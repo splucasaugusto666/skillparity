@@ -10,9 +10,11 @@ import stat
 import sys
 import tempfile
 
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 MAX_FILE = 32 * 1024 * 1024
 MAX_FILES = 10000
+MAX_CONFIG = 65536
+LABEL = re.compile(r'[A-Za-z0-9_-]+')
 
 
 def within(path, roots):
@@ -81,6 +83,8 @@ def scan(roots, allowed):
 
 
 def compare(roots, baseline, allowed=()):
+    if any(not isinstance(k, str) or not LABEL.fullmatch(k) for k in roots):
+        raise ValueError('root labels must contain only letters, digits, underscores or hyphens')
     roots = {k: Path(v).expanduser().resolve(strict=True) for k, v in roots.items()}
     if baseline not in roots or len(roots) < 2:
         raise ValueError('provide at least two roots and an existing baseline label')
@@ -162,6 +166,36 @@ def demo():
         return compare({k: base/k for k in ('source','claude','codex')}, 'source')
 
 
+def load_config(path):
+    """Read a small, explicitly selected JSON config; reject ambiguous keys."""
+    path = Path(path).expanduser().absolute()
+    with path.open('rb') as stream:
+        data = stream.read(MAX_CONFIG + 1)
+    if len(data) > MAX_CONFIG:
+        raise ValueError('config exceeds size limit')
+
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError('duplicate config key')
+            result[key] = value
+        return result
+
+    try:
+        config = json.loads(data.decode('utf-8'), object_pairs_hook=unique)
+    except (UnicodeError, RecursionError):
+        raise ValueError('invalid config encoding or nesting') from None
+    if not isinstance(config, dict) or set(config) != {'baseline', 'roots'}:
+        raise ValueError('config must contain exactly baseline and roots')
+    roots, baseline = config['roots'], config['baseline']
+    if not isinstance(roots, dict) or len(roots) < 2 or not isinstance(baseline, str) or baseline not in roots:
+        raise ValueError('config needs two or more roots and an existing baseline')
+    if any(not LABEL.fullmatch(k) or not isinstance(v, str) or not v for k, v in roots.items()):
+        raise ValueError('config roots must use valid labels and nonempty paths')
+    return {k: path.parent / Path(v).expanduser() for k, v in roots.items()}, baseline
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--version', action='version', version=VERSION)
@@ -172,18 +206,25 @@ def main(argv=None):
         output.add_argument('--json', action='store_true')
         output.add_argument('--summary', action='store_true', help='Print compact counts and exit status')
         if cmd == 'check':
-            p.add_argument('--root', action='append', required=True, metavar='LABEL=PATH')
-            p.add_argument('--baseline', required=True)
+            source = p.add_mutually_exclusive_group(required=True)
+            source.add_argument('--root', action='append', metavar='LABEL=PATH')
+            source.add_argument('--config', metavar='FILE', help='Read baseline and roots from a JSON file')
+            p.add_argument('--baseline')
             p.add_argument('--allow-target', action='append', default=[], metavar='PATH')
     args = parser.parse_args(argv)
     try:
         if args.command == 'demo':
             report = demo()
+        elif args.config is not None:
+            if args.baseline is not None:
+                raise ValueError('--baseline cannot be combined with --config')
+            roots, baseline = load_config(args.config)
+            report = compare(roots, baseline, args.allow_target)
         else:
             roots = {}
             for spec in args.root:
                 label, sep, path = spec.partition('=')
-                if not sep or not path or not re.fullmatch(r'[A-Za-z0-9_-]+', label) or label in roots:
+                if not sep or not path or not LABEL.fullmatch(label) or label in roots:
                     raise ValueError('roots must use unique LABEL=PATH values')
                 roots[label] = path
             report = compare(roots, args.baseline, args.allow_target)

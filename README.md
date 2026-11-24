@@ -57,6 +57,22 @@ python skillparity.py check --baseline source \
 
 For machine-readable output append `--json`; for compact CI output append `--summary` (counts are per target, excluding baseline cells). For symlinks that resolve outside the supplied roots, specify their trusted target directory with `--allow-target PATH`. Only allow directories you trust. Roots themselves are explicitly selected and resolved. No automatic home-directory discovery is performed.
 
+## Repeatable checks with a config file
+
+Save `skillparity.json` in your project (adjust paths to your actual installations):
+
+```json
+{"baseline":"source","roots":{"source":".agents/skills","claude":".claude/skills","codex":".codex/skills"}}
+```
+
+```sh
+skillparity check --config skillparity.json --summary
+```
+
+Relative paths are interpreted from the configuration file's directory. Only `baseline` and `roots` are accepted; duplicate keys are rejected. `--config` replaces `--root` and `--baseline`. Use only trusted configuration files; configured roots can reference arbitrary readable directories. External skill-link targets still require explicit `--allow-target` CLI arguments. Do not use untrusted PR configurations on privileged runners.
+
+See [CI integration](docs/CI_INTEGRATION.md) for a pinned workflow example.
+
 ## Results
 
 | Status | Meaning |
