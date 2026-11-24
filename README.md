@@ -37,6 +37,15 @@ python skillparity.py demo
 python -m unittest discover -s tests -v
 ```
 
+Or install the CLI from the repository using pipx (isolated environment):
+
+```sh
+pipx install git+https://github.com/splucasaugusto666/skillparity.git
+skillparity demo
+```
+
+The package is not currently published to PyPI. A local clone also supports `python -m pip install .` in a virtual environment.
+
 Compare two directories containing skill subdirectories. Paths are examples; select the actual directories used by your setup.
 
 ```sh
@@ -46,7 +55,7 @@ python skillparity.py check --baseline source \
   --root codex=.codex/skills
 ```
 
-For machine-readable output append `--json`. For symlinks that resolve outside the supplied roots, specify their trusted target directory with `--allow-target PATH`. Only allow directories you trust. Roots themselves are explicitly selected and resolved. No automatic home-directory discovery is performed.
+For machine-readable output append `--json`; for compact CI output append `--summary` (counts are per target, excluding baseline cells). For symlinks that resolve outside the supplied roots, specify their trusted target directory with `--allow-target PATH`. Only allow directories you trust. Roots themselves are explicitly selected and resolved. No automatic home-directory discovery is performed.
 
 ## Results
 

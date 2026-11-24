@@ -10,7 +10,7 @@ import stat
 import sys
 import tempfile
 
-VERSION = '0.1.0'
+VERSION = '0.2.0'
 MAX_FILE = 32 * 1024 * 1024
 MAX_FILES = 10000
 
@@ -136,6 +136,19 @@ def render(report):
         print('No skills found; parity cannot be verified.')
 
 
+def render_summary(report):
+    counts = {}
+    for row in report['skills']:
+        for label, cell in row['roots'].items():
+            if label == report['baseline']:
+                continue
+            status = cell['status']
+            counts[status] = counts.get(status, 0) + 1
+    details = ' | '.join(f'{key}={counts[key]}' for key in sorted(counts))
+    print(f"SkillParity | skills={len(report['skills'])} | targets={len(report['labels']) - 1}"
+          + (f' | {details}' if details else '') + f' | exit={exit_code(report)}')
+
+
 def demo():
     with tempfile.TemporaryDirectory() as d:
         base = Path(d)
@@ -155,7 +168,9 @@ def main(argv=None):
     sub = parser.add_subparsers(dest='command', required=True)
     for cmd in ('check','demo'):
         p = sub.add_parser(cmd)
-        p.add_argument('--json', action='store_true')
+        output = p.add_mutually_exclusive_group()
+        output.add_argument('--json', action='store_true')
+        output.add_argument('--summary', action='store_true', help='Print compact counts and exit status')
         if cmd == 'check':
             p.add_argument('--root', action='append', required=True, metavar='LABEL=PATH')
             p.add_argument('--baseline', required=True)
@@ -174,6 +189,8 @@ def main(argv=None):
             report = compare(roots, args.baseline, args.allow_target)
         if args.json:
             print(json.dumps(report, indent=2, ensure_ascii=True))
+        elif args.summary:
+            render_summary(report)
         else:
             render(report)
         return exit_code(report)

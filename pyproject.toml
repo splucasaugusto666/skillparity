@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skillparity"
+version = "0.2.0"
+description = "Read-only Agent Skills drift detection across coding tools"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = []
+keywords = ["agent-skills", "ai-agents", "drift-detection", "developer-tools", "ci"]
+
+[project.urls]
+Repository = "https://github.com/splucasaugusto666/skillparity"
+Issues = "https://github.com/splucasaugusto666/skillparity/issues"
+
+[project.scripts]
+skillparity = "skillparity:main"
+
+[tool.setuptools]
+py-modules = ["skillparity"]
