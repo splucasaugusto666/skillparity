@@ -4,7 +4,7 @@
 
 [![Release](https://img.shields.io/github/v/release/splucasaugusto666/skillparity)](https://github.com/splucasaugusto666/skillparity/releases/latest) [![CI](https://github.com/splucasaugusto666/skillparity/actions/workflows/ci.yml/badge.svg)](https://github.com/splucasaugusto666/skillparity/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**[Download v1.0.0](https://github.com/splucasaugusto666/skillparity/releases/tag/v1.0.0) · [Try it and share feedback](https://github.com/splucasaugusto666/skillparity/issues/1)**
+**[Download v1.1.0](https://github.com/splucasaugusto666/skillparity/releases/tag/v1.1.0) · [Try it and share feedback](https://github.com/splucasaugusto666/skillparity/issues/1)**
 
 A dependency-free, read-only CLI that compares Agent Skills directories across coding tools against a source of truth. It reports missing skills, extra skills, changed files, and broken or unapproved symlinks without executing a single skill or modifying your installations.
 
@@ -88,7 +88,7 @@ See [real-world use cases: shared skills, Claude Code, Codex and CI](docs/USE_CA
 
 ## Optional MCP integration (v1.1.0)
 
-The next release adds the `skillparity-mcp` command and optional `mcp` extra. The standard CLI still has zero runtime dependencies. The MCP adapter uses local stdio, fixed operator-selected catalogs, and aggregate-only output. The [client/server protocol smoke test](https://github.com/splucasaugusto666/skillparity/actions/runs/45309886663) passed on Linux; compatibility with individual host applications is not yet verified. See [MCP setup](docs/MCP.md) and [aggregate JSON](docs/AGGREGATE_JSON.md). Check [Releases](https://github.com/splucasaugusto666/skillparity/releases) for availability of v1.1.0.
+The published v1.1.0 release adds the `skillparity-mcp` command and optional `mcp` extra. The standard CLI still has zero runtime dependencies. The MCP adapter uses local stdio, fixed operator-selected catalogs, and aggregate-only output. The [client/server protocol smoke test](https://github.com/splucasaugusto666/skillparity/actions/runs/45309886663) passed on Linux; compatibility with individual host applications is not yet verified. See [MCP setup](docs/MCP.md) and [aggregate JSON](docs/AGGREGATE_JSON.md). See the [v1.1.0 release](https://github.com/splucasaugusto666/skillparity/releases/tag/v1.1.0) for the wheel and checksums. The [release workflow](https://github.com/splucasaugusto666/skillparity/actions/runs/45310514155) and [optional MCP smoke workflow](https://github.com/splucasaugusto666/skillparity/actions/runs/45310514160) completed successfully.
 
 ## Use SkillParity from an AI agent
 
