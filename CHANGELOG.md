@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 — release candidate
+
+- Added a reusable composite GitHub Action for Linux/POSIX runners.
+- Added a workspace-confined CI entry point, aggregate-only output and nine local integration tests.
+- Added synthetic fixtures and a remote Action smoke-test job. Remote execution is not yet verified.
+
 ## 0.3.0 — release candidate
 
 - Added reusable JSON configuration with relative paths, strict keys and size limit.

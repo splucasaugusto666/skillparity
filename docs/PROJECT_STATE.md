@@ -1,3 +1,3 @@
 # State
 
-Release candidate v0.3.0. Local tests: 27 passed. Python wheel built. Config input and summary tested. Remote CI and formal release remain unverified. Next: verify remote CI, gather independent feedback, formal release and topics when permitted.
+Release candidate v0.4.0. Local Linux/Python 3.13.5: 36 tests passed; synthetic CI fixture passed and returned 0. Composite Action and remote smoke-test job configured; remote execution and official release remain unverified. Next: verify remote CI, collect independent feedback, improve reports, and publish a formal release when permitted.

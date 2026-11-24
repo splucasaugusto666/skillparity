@@ -1,0 +1,18 @@
+name: SkillParity
+description: Check Agent Skills parity within a checked-out workspace
+branding:
+  icon: check-square
+  color: green
+inputs:
+  config:
+    description: JSON config path inside the checkout
+    required: false
+    default: skillparity.json
+runs:
+  using: composite
+  steps:
+    - name: Check skill parity
+      shell: bash
+      env:
+        SKILLPARITY_CONFIG: ${{ inputs.config }}
+      run: python "$GITHUB_ACTION_PATH/ci_check.py"
