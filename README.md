@@ -2,6 +2,10 @@
 
 **Same skill name. Different agent. Same files?**
 
+[![Release](https://img.shields.io/github/v/release/splucasaugusto666/skillparity)](https://github.com/splucasaugusto666/skillparity/releases/latest) [![CI](https://github.com/splucasaugusto666/skillparity/actions/workflows/ci.yml/badge.svg)](https://github.com/splucasaugusto666/skillparity/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+**[Download v1.0.0](https://github.com/splucasaugusto666/skillparity/releases/tag/v1.0.0) · [Try it and share feedback](https://github.com/splucasaugusto666/skillparity/issues/1)**
+
 A dependency-free, read-only CLI that compares Agent Skills directories across coding tools against a source of truth. It reports missing skills, extra skills, changed files, and broken or unapproved symlinks without executing a single skill or modifying your installations.
 
 ## Demo
@@ -28,7 +32,16 @@ SkillParity is not an installer, a semantic validator, or an agent runtime. It c
 
 ## Quick start
 
-Clone the repository and try the demo:
+Install the published wheel with pipx (Python 3.10+, no runtime dependencies):
+
+```sh
+pipx install https://github.com/splucasaugusto666/skillparity/releases/download/v1.0.0/skillparity-1.0.0-py3-none-any.whl
+skillparity demo --summary
+```
+
+Expected: `SkillParity | skills=1 | targets=2 | DRIFT=2 | exit=1`. The nonzero demo exit is intentional. The release includes SHA256SUMS for verification.
+
+Or clone the repository and try the demo:
 
 ```sh
 git clone https://github.com/splucasaugusto666/skillparity.git
@@ -37,7 +50,7 @@ python skillparity.py demo
 python -m unittest discover -s tests -v
 ```
 
-Or install the CLI from the repository using pipx (isolated environment):
+To install the development branch instead (review its changes first):
 
 ```sh
 pipx install git+https://github.com/splucasaugusto666/skillparity.git
@@ -75,7 +88,7 @@ See [CI integration](docs/CI_INTEGRATION.md) for a pinned workflow example.
 
 ## GitHub Action
 
-Add a parity gate to your repository on a Linux runner with Python 3.10+ and a checked-out workspace. Use the [integration guide](docs/CI_INTEGRATION.md) to pin a reviewed commit and configure the composite action. The action emits only aggregate counts, fails on drift or incomplete verification, and rejects configuration paths and catalog roots that resolve outside the workspace. It does not install or execute skills. Remote Action execution has not yet been verified.
+Add a parity gate to your repository on a Linux runner with Python 3.10+ and a checked-out workspace. Use the [integration guide](docs/CI_INTEGRATION.md) to pin a reviewed commit and configure the composite action. The action emits only aggregate counts, fails on drift or incomplete verification, and rejects configuration paths and catalog roots that resolve outside the workspace. It does not install or execute skills. The [release workflow](https://github.com/splucasaugusto666/skillparity/actions/runs/45306438506) passed the composite-action smoke test.
 
 ## Visual reports
 
@@ -112,10 +125,10 @@ Exit codes: **0** verified parity; **1** differences; **2** incomplete verificat
 
 ## CI
 
-Run `python -m unittest discover -s tests -v` for the project's own tests. To enforce parity in your repository, call the `check` command with your actual roots and baseline in your existing CI. The supplied workflow tests this project on Linux, Windows and macOS when enabled by GitHub Actions; remote execution is not yet verified.
+Run `python -m unittest discover -s tests -v` for the project's own tests. To enforce parity in your repository, call the `check` command with your actual roots and baseline in your existing CI. The v1.0.0 [release workflow](https://github.com/splucasaugusto666/skillparity/actions/runs/45306438506) passed all nine jobs, including Python 3.10 and 3.13 on Linux, Windows and macOS, the composite-action smoke test, wheel build and publication.
 
 ## Contributing
 
-Reproducible reports and small tests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
+Reproducible reports and small tests are welcome. If you use multiple coding agents, [share your installation experience](https://github.com/splucasaugusto666/skillparity/issues/1). Avoid sharing confidential paths or skill contents. See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
 
 MIT licensed. If this project is useful to you, consider giving it a star.
