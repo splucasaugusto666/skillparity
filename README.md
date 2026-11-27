@@ -35,7 +35,7 @@ SkillParity is not an installer, a semantic validator, or an agent runtime. It c
 Install the published wheel with pipx (Python 3.10+, no runtime dependencies):
 
 ```sh
-pipx install https://github.com/splucasaugusto666/skillparity/releases/download/v1.0.0/skillparity-1.0.0-py3-none-any.whl
+pipx install https://github.com/splucasaugusto666/skillparity/releases/download/v1.1.0/skillparity-1.1.0-py3-none-any.whl
 skillparity demo --summary
 ```
 
